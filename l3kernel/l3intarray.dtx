@@ -199,10 +199,11 @@
 %    \end{macrocode}
 % \end{variable}
 %
-% \begin{variable}{\g_@@_table_int}
-%   Used to differentiate intarrays in Lua
+% \begin{variable}{\g_@@_table_int, \l_@@_bad_index_int}
+%   Used to differentiate intarrays in Lua and to record an invalid index.
 %    \begin{macrocode}
 \int_new:N \g_@@_table_int
+\int_new:N \l_@@_bad_index_int
 %    \end{macrocode}
 % \end{variable}
 %
@@ -212,11 +213,18 @@
 %    \end{macrocode}
 %
 % \begin{macro}{\s_@@}
-%   Used as marker in for intarrays in Lua. Followed by an unbraced number
+%   Used as marker for intarrays in Lua. Followed by an unbraced number
 %   identifying the array and a single space. This format is used to make it
 %   easy to scan from Lua.
 %    \begin{macrocode}
-\scan_new:N \s_@@
+%</tex>
+%<*lua>
+luacmd('s_@@', function()
+  scan_int()
+  tex.error'Isolated intarray ignored'
+end, 'protected', 'global')
+%</lua>
+%<*tex>
 %    \end{macrocode}
 % \end{macro}
 %
@@ -259,14 +267,13 @@ local scan_token = token.scan_token
 local scan_toks = token.scan_toks
 local get_csname = token.get_csname
 local put_next = token.put_next
-local use_none
-local use_i
-
 local s_@@ = token.create's_@@'
-if s_@@.cmdname == "undefined_cs" then
-  s_@@ = nil
+local use_none
+
+local use_i = token.create'use:n'
+if use_i.cmdname == "undefined_cs" then
+  use_i = nil
 else
-  use_i = token.create'use:n'
   use_none = token.create'use_none:n'
 end
 
@@ -309,8 +316,7 @@ end
 local write = tex.write
 
 luacmd('@@_gset_count:Nw', function()
-  if not s_@@ then
-    s_@@ = token.create's_@@'
+  if not use_i then
     use_i = token.create'use:n'
     use_none = token.create'use_none:n'
   end
@@ -347,6 +353,7 @@ luacmd('@@_gset:wNwF', function()
     t[i] = scan_int()
     put_next(use_none)
   else
+    tex.l_@@_bad_index_int = i
     scan_int()
     put_next(use_i)
   end
@@ -382,7 +389,7 @@ end, 'protected', 'global')
     \@@_gset:wNwF \int_eval:n {#2} #1 \int_eval:n{#3}
       {
         \__kernel_msg_error:nnxxx { kernel } { out-of-bounds }
-          { \token_to_str:N #1 } { \int_eval:n {#2} } { \intarray_count:N #1 }
+          { \token_to_str:N #1 } { \int_use:N \l_@@_bad_index_int } { \intarray_count:N #1 }
       }
   }
 \cs_generate_variant:Nn \intarray_gset:Nnn { c }
@@ -424,6 +431,7 @@ luacmd('@@_item:wNF', function()
   if item then
     put_next(use_none)
   else
+    tex.l_@@_bad_index_int = i
     put_next(use_i)
   end
   write(item or 0)
@@ -446,7 +454,7 @@ end, 'global')
     \@@_item:wNF \int_eval:n {#2} #1
       {
         \__kernel_msg_expandable_error:nnfff { kernel } { out-of-bounds }
-          { \token_to_str:N #1 } { \int_eval:n {#2} } { \intarray_count:N #1 }
+          { \token_to_str:N #1 } { \int_use:N \l_@@_bad_index_int } { \intarray_count:N #1 }
       }
   }
 \cs_generate_variant:Nn \intarray_item:Nn { c }
@@ -456,7 +464,6 @@ end, 'global')
 %
 % \begin{macro}{\intarray_rand_item:N, \intarray_rand_item:c}
 %   Importantly, \cs{intarray_item:Nn} only evaluates its argument once.
-%   (Except if it's out of bounds, but that can't happen here.)
 %    \begin{macrocode}
 \cs_new:Npn \intarray_rand_item:N #1
   { \intarray_item:Nn #1 { \int_rand:n { \intarray_count:N #1 } } }
