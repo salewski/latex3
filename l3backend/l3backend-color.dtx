@@ -490,6 +490,11 @@
 %     \@@_backend_separation_init:nxxnn,
 %     \@@_backend_separation_init_aux:nnnnn
 %   }
+% \begin{macro}
+%   {
+%     \@@_backend_separation_init:nnnnnn    ,
+%     \@@_backend_separation_init_aux:nnnnnn
+%   }
 % \begin{macro}[EXP]
 %   {
 %     \@@_backend_separation_init_/DeviceCMYK:nnn ,
@@ -515,23 +520,30 @@
   {
     \bool_if:NT \g__kernel_backend_header_bool
       {
-        \cs_if_exist:NTF \AtBeginDvi
-          { \exp_not:N \AtBeginDvi }
-          { \use:n }
-            {
-              \exp_not:N \@@_backend_separation_init_aux:nnnnn
-                {#1} {#2} {#3} {#4} {#5}
-            }
+        \exp_not:N \exp_args:Ne
+          \exp_not:N \@@_backend_separation_init:nnnnnn
+            { \exp_not:N \int_use:N \g_@@_model_int }
+            {#1} {#2} {#3} {#4} {#5}
       }
   }
 \cs_generate_variant:Nn \@@_backend_separation_init:nnnnn { nxx }
-\cs_new_protected:Npn \@@_backend_separation_init_aux:nnnnn #1#2#3#4#5
+\cs_new_protected:Npx \@@_backend_separation_init:nnnnnn #1#2#3#4#5#6
+  {
+    \cs_if_exist:NTF \AtBeginDvi
+      { \exp_not:N \AtBeginDvi }
+      { \use:n }
+        {
+          \exp_not:N \@@_backend_separation_init_aux:nnnnnn
+            {#2} {#3} {#4} {#5} {#6} {#1}
+        }
+  }
+\cs_new_protected:Npn \@@_backend_separation_init_aux:nnnnnn #1#2#3#4#5#6
   {
     \__kernel_backend_literal:e
       {
         !
         TeXDict ~ begin ~
-        /color \int_use:N \g_@@_model_int
+        /color #6
           {
             [ ~
               /Separation ~ ( \str_convert_pdfname:n {#1} ) ~
@@ -698,6 +710,7 @@
       {#3}
   }
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 % \end{macro}
 % \end{macro}

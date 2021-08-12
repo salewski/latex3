@@ -6,6 +6,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Fixed
+- Support for multiple separations with `dvips`
+
 ## [2021-02-18]
 
 ### Changed
