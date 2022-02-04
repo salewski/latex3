@@ -1947,6 +1947,16 @@
     should~be~a~clist~variable,~but~it~includes~empty~or~blank~items~
     without~braces.
   }
+\msg_new:nnnn { prop } { misused }
+  { A~property~list~was~misused. }
+  {
+    \c_@@_coding_error_text_tl
+    A~property~list~variable~was~used~without~an~accessor~function.~
+    It~
+    \tl_if_empty:nTF {#1}
+      { is~empty. }
+      { contains~the~key-value~pairs \use_none:n #1 . }
+  }
 %    \end{macrocode}
 %
 % Some errors are only needed in package mode if debugging is enabled by
@@ -1974,8 +1984,6 @@
   { Erroneous~variable~#1 used! }
 \msg_new:nnn { seq } { misused }
   { A~sequence~was~misused. }
-\msg_new:nnn { prop } { misused }
-  { A~property~list~was~misused. }
 \msg_new:nnn { prg } { negative-replication }
   { Negative~argument~for~\iow_char:N\\prg_replicate:nn. }
 \msg_new:nnn { prop } { prop-keyval }

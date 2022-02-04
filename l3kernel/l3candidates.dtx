@@ -1026,7 +1026,8 @@
 %   an item of a |prop| given an integer between $1$ and the number of
 %   items, so we write the appropriate code.  There is no bounds
 %   checking because \cs{int_rand:nn} is always within bounds.  The
-%   initial \cs{int_value:w} is stopped by the first \cs{s_@@} in~|#1|.
+%   initial \cs{int_value:w} is stopped by the first \cs{s_@@} in the
+%   (implicit) |f|-expansion of~|#1|.
 %    \begin{macrocode}
 \cs_new:Npn \prop_rand_key_value:N #1
   {
@@ -1038,12 +1039,13 @@
       }
   }
 \cs_generate_variant:Nn \prop_rand_key_value:N { c }
-\cs_new:Npn \@@_rand_item:w #1 \s_@@ \@@_pair:wn #2 \s_@@ #3
+\cs_new:Npn \@@_rand_item:w
+    #1 \s_@@ \@@_chk:w \@@_pair:wn #2 \s_@@ #3
   {
     \int_compare:nNnF {#1} > 1
       { \@@_use_i_delimit_by_s_stop:nw { \exp_not:n { {#2} {#3} } } }
     \exp_after:wN \@@_rand_item:w
-    \int_value:w \int_eval:n { #1 - 1 } \s_@@
+    \int_value:w \int_eval:n { #1 - 1 } \s_@@ \@@_chk:w
   }
 %    \end{macrocode}
 % \end{macro}

@@ -318,7 +318,7 @@ The variable '\l_tmpa_tl' with value
     \s__fp \__fp_chk:w 10{1}{1000}{0000}{0000}{0000};;
 should be a prop variable, but it does not have the correct internal
 structure:
-    \s__prop 
+    \s__prop \__prop_chk:w 
 ! LaTeX3 Error: Variable '\l_tmpa_tl' is not a valid seq.
 For immediate help type H <return>.
  ...                                              
