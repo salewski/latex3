@@ -858,7 +858,7 @@
 %   again after expanding the next key's token list.  Its argument |#3| is
 %   empty, except at the end where it is the \cs{use_none:nnnn} appearing in the
 %   definition of~\cs{@@_flatten_aux:N}, which ends the loop.
-%   \begin{syntax}
+%    \begin{macrocode}
 \cs_new:Npn \@@_flatten:N #1
   { \exp_after:wN \@@_flatten_aux:w #1 }
 \cs_new:Npn \@@_flatten_aux:w #1 \s_@@ #2 { \@@_flatten_aux:N }
@@ -874,7 +874,7 @@
     \exp_not:n { \@@_pair:wn #4 \s_@@ {#5} }
     \exp_after:wN \@@_flatten_loop:w
   }
-%   \end{syntax}
+%    \end{macrocode}
 % \end{macro}
 %
 % \begin{variable}{\g_@@_prefix_int, \c_@@_basis_int}
