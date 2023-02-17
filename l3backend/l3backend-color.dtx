@@ -301,6 +301,12 @@
 % \begin{macro}{\@@_backend_select:nn}
 % \begin{macro}{\@@_backend_reset:}
 % \begin{macro}{\@@_backend_stack_push:nn}
+% \begin{macro}
+%   {
+%     \@@_backend_stack_push:nnn ,
+%     \@@_backend_stack_push:nVn ,
+%     \@@_backend_stack_push:nnV
+%   }
 %   Store the values then pass to the stack. The abstraction here allows for
 %   transparency needing the same fundamental approach but with switchable
 %   code for \LuaTeX{}.
@@ -320,7 +326,11 @@
 \cs_new_protected:Npn \@@_backend_reset:
   { \__kernel_color_backend_stack_pop:n \l_@@_backend_stack_int }
 \cs_new_eq:NN \@@_backend_stack_push:nn \__kernel_color_backend_stack_push:nn
+\cs_new_protected:Npn \@@_backend_stack_push:nnn #1#2#3
+  { \@@_backend_stack_push:nn {#1} { #2 ~ #3 } }
+\cs_generate_variant:Nn \@@_backend_stack_push:nnn { nV , nnV }
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 % \end{macro}
 % \end{macro}
@@ -1101,8 +1111,8 @@
 \cs_new_protected:Npn \@@_backend_fill:n #1
   {
     \tl_set:Nn \l_@@_backend_fill_tl {#1}
-    \@@_backend_stack_push:nn \l_@@_backend_stack_int
-      { #1 ~ \l_@@_backend_stroke_tl }
+    \@@_backend_stack_push:nnV \l_@@_backend_stack_int
+      {#1} \l_@@_backend_stroke_tl
   }
 \cs_new_protected:Npn \@@_backend_stroke_cmyk:n #1
   { \@@_backend_stroke:n { #1 ~ K } }
@@ -1113,8 +1123,8 @@
 \cs_new_protected:Npn \@@_backend_stroke:n #1
   {
     \tl_set:Nn \l_@@_backend_stroke_tl {#1}
-    \@@_backend_stack_push:nn \l_@@_backend_stack_int
-      { \l_@@_backend_fill_tl \c_space_tl #1 }
+    \@@_backend_stack_push:nVn \l_@@_backend_stack_int
+      \l_@@_backend_fill_tl {#1}
   }
 %    \end{macrocode}
 % \end{macro}
