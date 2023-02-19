@@ -247,7 +247,7 @@
 %     \@@_backend_select_rgb:n   ,
 %     \@@_backend_select:n
 %   }
-% \begin{macro}{\@@_backend_reset:}
+% \begin{macro}{\@@_backend_reset:, \@@_backend_reset_aux:}
 % \begin{macro}{color.sc}
 %    Push the data to the stack. In the case of \texttt{dvips} also saves the
 %    drawing color in raw PostScript. The |spot| model is for handling data
@@ -269,6 +269,8 @@
 %</dvips>
   }
 \cs_new_protected:Npn \@@_backend_reset:
+  { \group_insert_after:N \@@_backend_reset_aux: }
+\cs_new_protected:Npn \@@_backend_reset_aux:
   { \__kernel_backend_literal:n { color~pop } }
 %    \end{macrocode}
 % \end{macro}
@@ -299,7 +301,7 @@
 %     \@@_backend_select_rgb:n
 %   }
 % \begin{macro}{\@@_backend_select:nn}
-% \begin{macro}{\@@_backend_reset:}
+% \begin{macro}{\@@_backend_reset:, \@@_backend_reset_aux:}
 % \begin{macro}{\@@_backend_stack_push:nn}
 % \begin{macro}
 %   {
@@ -324,6 +326,8 @@
     \@@_backend_stack_push:nn \l_@@_backend_stack_int { #1 ~ #2 }
   }
 \cs_new_protected:Npn \@@_backend_reset:
+  { \group_insert_after:N \@@_backend_reset_aux: }
+\cs_new_protected:Npn \@@_backend_reset_aux:
   { \__kernel_color_backend_stack_pop:n \l_@@_backend_stack_int }
 \cs_new_eq:NN \@@_backend_stack_push:nn \__kernel_color_backend_stack_push:nn
 \cs_new_protected:Npn \@@_backend_stack_push:nnn #1#2#3
@@ -361,7 +365,7 @@
 %     \@@_backend_select_gray:n ,
 %     \@@_backend_select_rgb:n
 %   }
-% \begin{macro}{\@@_backend_reset:}
+% \begin{macro}{\@@_backend_reset:, \@@_backend_reset_aux:}
 %   Using the single stack is relatively easy as there is only one route.
 %    \begin{macrocode}
 \cs_new_protected:Npn \@@_backend_select:n #1
@@ -370,6 +374,8 @@
 \cs_new_eq:NN \@@_backend_select_gray:n \@@_backend_select:n
 \cs_new_eq:NN \@@_backend_select_rgb:n  \@@_backend_select:n
 \cs_new_protected:Npn \@@_backend_reset:
+  { \group_insert_after:N \@@_backend_reset_aux: }
+\cs_new_protected:Npn \@@_backend_reset_aux:
   { \__kernel_backend_literal:n { pdf : ec } }
 %    \end{macrocode}
 % \end{macro}
@@ -1148,8 +1154,8 @@
 %
 % \begin{macro}{\@@_backend_fill_reset:, \@@_backend_stroke_reset:}
 %    \begin{macrocode}
-\cs_new_protected:Npn \@@_backend_fill_reset: { \@@_backend_reset: }
-\cs_new_protected:Npn \@@_backend_stroke_reset: { \@@_backend_reset: }
+\cs_new_eq:NN \@@_backend_fill_reset: \@@_backend_reset:
+\cs_new_eq:NN \@@_backend_stroke_reset: \@@_backend_reset:
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1351,6 +1357,16 @@
 %    \begin{macrocode}
 %</dvisvgm>
 %    \end{macrocode}
+%
+% \subsection{Math color}
+%
+% \begin{macro}{\@@_backend_math_reset:}
+%   No grouping so no \cs{group_insert_after:N}: all the engines are the same
+%   initially here but we need an abstraction for \LuaTeX{}.
+%    \begin{macrocode}
+\cs_new_eq:NN \@@_backend_math_reset: \@@_backend_reset_aux:
+%    \end{macrocode}
+% \end{macro}
 %
 %    \begin{macrocode}
 %</package>
@@ -1720,12 +1736,19 @@ end,'global','protected')
 % \begin{macro}{\@@_backend_stack_push:nn}
 % \begin{macro}{\@@_backend_reset:}
 %   A simple reworking: we may need to check about transparency here.
+%   Math color has to be manually reset as there is no group to rely on:
+%   we know that the current color tracked at the macro level will be the
+%   one we need.
 %    \begin{macrocode}
 \cs_gset_protected:Npn \@@_backend_stack_push:nn #1#2
   {
     \lua_now:e { ltx.color.select(" \lua_escape:n {#2} ") }
   }
 \cs_gset_protected:Npn \@@_backend_reset: { }
+\cs_gset_protected:Npn \@@_backend_fill_reset: { }
+\cs_gset_protected:Npn \@@_backend_stroke_reset: { }
+\cs_gset_protected:Npn \@@_backend_math_reset:
+  { \@@_select:N \l_@@_current_tl }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
