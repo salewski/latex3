@@ -915,6 +915,48 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+%<*hitex>
+%    \end{macrocode}
+%
+% \begin{variable}{\l_graphics_search_ext_seq}
+%    \begin{macrocode}
+\@@_backend_loaded:n
+  { \seq_set_from_clist:Nn \l_graphics_search_ext_seq { .jpg , .png } }
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{macro}{\@@_backend_getbb_jpg:n, \@@_backend_getbb_png:n}
+% \begin{macro}{\@@_backend_getbb_aux:n}
+%    \begin{macrocode}
+\cs_new_protected:Npn \@@_backend_getbb_jpg:n #1
+  {
+    \@@_bb_restore:xF {#1}
+      { \@@_backend_getbb_aux:n {#1} }
+  }
+\cs_new_protected:Npn \@@_backend_getbb_aux:n #1
+  {
+    \hbox_set:Nn \l_@@_internal_box
+      { \tex_HINTimage:D #1 \scan_stop: }
+    \dim_set:Nn \l_@@_urx_dim { \box_wd:N \l_@@_internal_box }
+    \dim_set:Nn \l_@@_ury_dim { \box_ht:N \l_@@_internal_box }
+  }
+\cs_new_eq:NN \@@_backend_getbb_png:n \@@_backend_getbb_jpg:n
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_backend_include_jpg:n, \@@_backend_include_png:n}
+%    \begin{macrocode}
+\cs_new_protected:Npn \@@_backend_include_jpg:n #1
+  { \hbox:n { \tex_HINTimage:D #1 \scan_stop: } }
+\cs_new_eq:NN \@@_backend_include_png:n \@@_backend_include_jpg:n
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+%</hitex>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 %</package>
 %    \end{macrocode}
 %
