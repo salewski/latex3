@@ -9,6 +9,7 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 - `\box_set_clipped:N` and variants (renamed from `\box_clip:N`)
+- Limited and _experimental_ support for HiTeX
 
 ### Changed
 - `\box_set_trim:Nnnnn` and `\box_set_viewport:Nnnnn` moved to

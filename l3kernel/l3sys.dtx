@@ -328,6 +328,24 @@
 %   a backend.
 % \end{function}
 %
+% \subsection{Experimental Hi\TeX{} support}
+%
+% To allow testing with Hi\TeX{}, currently in development to allow reflowable
+% output from \TeX{}, a small number of adjustments are made in the \pkg{l3sys}
+% module if this program is used:
+% \begin{itemize}
+%   \item \cs{c_sys_engine_str} will give the value \texttt{hitex};
+%   \item \cs{c_sys_engine_exec_str} and \cs{c_sys_engine_format_str} will
+%     being with~\texttt{hi};
+%   \item \cs{c_sys_output_str} will take value \texttt{hnt};
+%   \item Both \cs{sys_if_output_dvi:TF} and \cs{sys_if_output_pdf:} will
+%     take the false branches, and the matching predicates will be false.
+% \end{itemize}
+% Note that no \emph{new} functions are defined: the putative
+% \cs{sys_if_engine_hitex:(TF)} is \emph{not} defined, nor is
+% \cs{sys_if_output_hnt:(TF)}. These may be added later depending on the
+% development of Hi\TeX{}.
+%
 % \end{documentation}
 %
 % \begin{implementation}
@@ -384,6 +402,7 @@
 %    \begin{macrocode}
 \str_const:Nx \c_sys_engine_str
   {
+    \cs_if_exist:NT \tex_HINTversion:D { hitex }
     \cs_if_exist:NT \tex_luatexversion:D { luatex }
     \cs_if_exist:NT \tex_pdftexversion:D { pdftex }
     \cs_if_exist:NT \tex_kanjiskip:D
@@ -421,6 +440,7 @@
   \cs_set_eq:NN \lua_now:e    \tex_directlua:D
   \str_const:Nx \c_sys_engine_exec_str
     {
+      \cs_if_exist:NT \tex_HINTversion:D { hi }
       \sys_if_engine_pdftex:T { pdf }
       \sys_if_engine_xetex:T  { xe  }
       \sys_if_engine_ptex:T   { ep  }
@@ -445,6 +465,7 @@
           { \str_if_eq_p:Vn \fmtname { plain } }
           { \str_if_eq_p:Vn \fmtname { LaTeX2e } }
           {
+            \cs_if_exist:NT \tex_HINTversion:D { hi }
             \sys_if_engine_pdftex:T
               { \int_compare:nNnT { \tex_pdfoutput:D } = { 1 } { pdf } }
             \sys_if_engine_xetex:T  { xe }
@@ -558,16 +579,20 @@
               }
           }
           {
-            \str_case:VnF #1
+            \cs_if_exist:NTF \tex_HINTversion:D
+              { \tl_gset:Nn #1 { hitex } }
               {
-                { dvipdfmx } { }
-                { dvips }    { }
-                { dvisvgm }  { }
-              }
-              {
-                \msg_error:nnxx { sys } { wrong-backend }
-                  #1 { dvips }
-                \tl_gset:Nn #1 { dvips }
+                \str_case:VnF #1
+                  {
+                    { dvipdfmx } { }
+                    { dvips }    { }
+                    { dvisvgm }  { }
+                  }
+                  {
+                    \msg_error:nnxx { sys } { wrong-backend }
+                      #1 { dvips }
+                    \tl_gset:Nn #1 { dvips }
+                  }
               }
           }
       }
@@ -1031,7 +1056,11 @@ end
         \int_compare:nNnTF
           { \cs_if_exist_use:NF \tex_pdfoutput:D { 0 } } > { 0 }
           { pdf }
-          { dvi }
+          {
+            \cs_if_exist:NTF \tex_HINTversion:D
+              { hnt }
+              { dvi }
+          }
       }
     \@@_const:nn { sys_if_output_dvi }
       { \str_if_eq_p:Vn \c_sys_output_str { dvi } }
@@ -1056,13 +1085,17 @@ end
         \sys_if_engine_xetex:TF
           { xetex }
           {
-             \sys_if_output_pdf:TF
+            \sys_if_output_pdf:TF
               {
                 \sys_if_engine_pdftex:TF
                   { pdftex }
                   { luatex }
               }
-              { dvips }
+              {
+                \cs_if_exist:NTF \tex_HINTversion:D
+                  { hitex }
+                  { dvips }
+              }
            }
       }
   }
