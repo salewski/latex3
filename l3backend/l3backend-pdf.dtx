@@ -72,7 +72,7 @@
 % are common to most backends.
 %
 %    \begin{macrocode}
-%<*!dvisvgm>
+%<*!dvisvgm&!hitex>
 %    \end{macrocode}
 %
 % \begin{variable}{\l_@@_internal_box}
@@ -82,7 +82,7 @@
 % \end{variable}
 %
 %    \begin{macrocode}
-%</!dvisvgm>
+%</!dvisvgm&!hitex>
 %    \end{macrocode}
 %
 % \subsection{\texttt{dvips} backend}
@@ -1572,10 +1572,10 @@
 %</dvipdfmx|xetex>
 %    \end{macrocode}
 %
-% \subsection{\texttt{dvisvgm} backend}
+% \subsection{\texttt{dvisvgm} and \texttt{hitex} backends}
 %
 %    \begin{macrocode}
-%<*dvisvgm>
+%<*dvisvgm|hitex>
 %    \end{macrocode}
 %
 % \subsubsection{Annotations}
@@ -1704,7 +1704,7 @@
 % \end{macro}
 %
 %    \begin{macrocode}
-%</dvisvgm>
+%</dvisvgm|hitex>
 %    \end{macrocode}
 %
 % \subsection{PDF Page size (media box)}
@@ -1765,7 +1765,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%<*dvisvgm>
+%<*dvisvgm|hitex>
 %    \end{macrocode}
 %
 % \begin{macro}{\@@_backend_pagesize_gset:nn}
@@ -1776,7 +1776,7 @@
 % \end{macro}
 %
 %    \begin{macrocode}
-%</dvisvgm>
+%</dvisvgm|hitex>
 %    \end{macrocode}
 %
 %    \begin{macrocode}

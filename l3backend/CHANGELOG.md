@@ -6,6 +6,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- Experimental backend support for HiTeX
+
 ## [2023-03-30]
 
 ### Changed
