@@ -10,6 +10,9 @@ this project uses date-based 'snapshot' version identifiers.
 ### Added
 - Key `pdf-attr` to `l3graphics` for additional attribute setting
 
+### Removed
+- `l3graphics` package: integrated into `l3kernel`
+
 ### Fixed
 - Grouping in `\draw_path_arc_axes:nnnn` (see \#1195)
 

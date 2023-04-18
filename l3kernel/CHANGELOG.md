@@ -13,6 +13,7 @@ this project uses date-based 'snapshot' version identifiers.
    `\text_declare_titlecase_mapping:nn(n)`
    and `\text_declare_uppercase_mapping:nn(n)` to allow customization of
    case changing outcomes
+- Module `l3graphics`, moved from `l3experimental` to stable status
 
 ### Changed
 - `\box_set_trim:Nnnnn` and `\box_set_viewport:Nnnnn` moved to

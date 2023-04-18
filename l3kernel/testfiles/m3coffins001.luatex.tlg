@@ -30,7 +30,7 @@ This is a coding error.
 LaTeX has been asked to create a new control sequence '\l_tmpa_coffin' but
 this name has already been used elsewhere.
 The current meaning is:
-  \char"16
+  \char"17
 Defining \l_tmpa_coffin on line ...
 \l_tmpa_coffin=\box...
 ============================================================
@@ -2760,7 +2760,7 @@ For immediate help type H <return>.
  ...                                              
 l. ...  }
 This is a coding error.
-Local assignment to a global variable '\coffin 24 poles'.
+Local assignment to a global variable '\coffin 25 poles'.
 Size of coffin \l_tmpa_coffin:
 > ht = 6.94444pt
 > dp = 0.0pt
@@ -2826,7 +2826,7 @@ For immediate help type H <return>.
  ...                                              
 l. ...  }
 This is a coding error.
-Local assignment to a global variable '\coffin 24 poles'.
+Local assignment to a global variable '\coffin 25 poles'.
 Size of coffin \l_tmpa_coffin:
 > ht = 6.94444pt
 > dp = 0.0pt

@@ -1,5 +1,5 @@
 %
-% Copyright (C) 2022 The LaTeX Project
+% Copyright (C) 2022,2023 The LaTeX Project
 %
 
 \documentclass{minimal}
@@ -9,8 +9,6 @@
 \ExplSyntaxOn
 \debug_on:n { check-declarations , deprecation }
 \ExplSyntaxOff
-
-\RequirePackage{l3graphics}
 
 \begin{document}
 
