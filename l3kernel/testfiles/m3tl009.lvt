@@ -1,5 +1,5 @@
 %
-% Copyright (C) 2011-2016,2018-2021 The LaTeX Project
+% Copyright (C) 2011-2016,2018-2021,2023 The LaTeX Project
 %
 \documentclass{minimal}
 \input{regression-test}
@@ -203,7 +203,7 @@
         \tl_log:N \l_A_tl
         \tl_log:n { & \tex_cr:D }
         \tex_cr:D
-        \TYPE{1} \tl_reverse:n { \tex_cr:D & }
+        \TYPE{1} \tl_reverse_use:n { \tex_cr:D & }
       }
     }
 }
