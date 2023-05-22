@@ -13,8 +13,8 @@ this project uses date-based 'snapshot' version identifiers.
 - `\coffin_(g)reset_poles:N`
 - `\int_if_zero:n(TF)`
 - `\str_mdfive_hash:n`
--  `\tl_reverse_use:n` (was `\tl_reverse:n`)
--  `\tl_sort_use:nN` (was `\tl_sort:nN`)
+- `\tl_reverse_use:n` (was `\tl_reverse:n`)
+- `\tl_sort_use:nN` (was `\tl_sort:nN`)
 
 ### Changed
 - Remove `\noexpand` inside math mode in `\text_expand:n`
