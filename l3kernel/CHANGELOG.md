@@ -7,6 +7,9 @@ this project uses date-based 'snapshot' version identifiers.
 
 ## [Unreleased]
 
+### Added
+- `\use:ee`, `\use:eee`, etc. up to `\use:eeeeeeeee`
+
 ## [2023-06-30]
 
 ### Added
