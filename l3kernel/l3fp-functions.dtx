@@ -238,21 +238,7 @@
       \exp_after:wN \@@_function_arg_few:w
     \fi:
     \if_int_compare:w #1 = \c_one_int
-      \exp_after:wN \@@_function_arg_get:w% \begin{macro}[added = 2023-07-05]{\fp_clear_variable:n}
-%   \begin{syntax}
-%     \cs{fp_clear_variable:n} \Arg{identifier}
-%   \end{syntax}
-%   Removes any value given by \cs{fp_set_variable:nn} to the variable
-%   with this \meta{identifier}.  For instance,
-%   \begin{quote}
-%     \cs{fp_new_variable:n} |{ A }|
-%     \cs{fp_set_variable:nn} |{ A } { 3 }|
-%     \cs{fp_show:n} |{ A ^ 2 }|
-%     \cs{fp_clear_variable:n} |{ A }|
-%     \cs{fp_show:n} |{ A ^ 2 }|
-%   \end{quote}
-%   shows~|9|, then~|(A^2)|.
-% \end{macro}
+      \exp_after:wN \@@_function_arg_get:w
     \fi:
     \@@_use_i_until_s:nw
       {
