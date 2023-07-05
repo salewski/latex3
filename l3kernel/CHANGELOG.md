@@ -9,6 +9,8 @@ this project uses date-based 'snapshot' version identifiers.
 
 ### Added
 - `\use:ee`, `\use:eee`, etc. up to `\use:eeeeeeeee`
+- Support for symbolic variables in fp input:
+  `\fp_new_variable:n`, `\fp_set_variable:nn` and `\fp_clear_variable:n`
 
 ## [2023-06-30]
 
